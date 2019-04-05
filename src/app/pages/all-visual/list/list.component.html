@@ -1,0 +1,41 @@
+<nb-card>
+  <nb-card-header>
+    All Visual List
+  </nb-card-header>  
+  <nb-card-header>
+    <form class="form-inline" #form="ngForm" novalidate (ngSubmit)="sorts= []; applyFilter = true; applySorting = false; getVisualList(1, form.value,'', applyFilter, applySorting)">
+      <input type="text" class="form-control full-width margin-5" ngModel name="title" #title="ngModel" placeholder="Title">
+      <!-- <input type="text" class="form-control full-width margin-5" ngModel name="author" #author="ngModel" placeholder="Author"> -->
+      <input type="text" class="form-control full-width margin-5" ngModel name="tags" #tags="ngModel" placeholder="tag">
+      <button type="submit" class="btn btn-primary mr-1 mb-1">Search</button>
+      <button type="button" class="btn btn-primary mr-1 mb-1 reset" (click)="sorts= []; applyFilter = false; applySorting = false; form.reset(); getVisualList(1, form.value,'', applyFilter, applySorting)">Reset</button>
+    </form>
+  </nb-card-header>
+  <nb-card-body>
+    <ngx-datatable class="material" [rows]="rows"  [columnMode]="'force'" [rowHeight]="'auto'" [headerHeight]="50" [footerHeight]="50" [loadingIndicator]="loading" [count]="data?.count" [offset]="data?.currentPage - 1" [externalPaging]="true" [limit]="limit" [externalSorting]="true" (sort)="applySorting = true; getVisualList(1, form.value, $event, applyFilter ,applySorting)" [sorts]="sorts">
+      <ngx-datatable-column name="Title" prop="title"></ngx-datatable-column>
+      <ngx-datatable-column name="Author" prop="username" [sortable]="false"></ngx-datatable-column>
+      <ngx-datatable-column name="Tags" prop="tags"></ngx-datatable-column><ngx-datatable-column name="Upvotes" prop="upvote"></ngx-datatable-column>
+      <ngx-datatable-column name="Action"  [sortable]="false" >
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <nb-actions size="medium">
+            <nb-action icon="nb-edit" (click)="edit(row)" title='Edit Visual'></nb-action>            
+            <nb-action icon="nb-trash" (click)="delete(row.id,row.user_id)" title='Delete Visual'></nb-action>
+            
+          </nb-actions>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-footer>
+        <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-curPage="curPage" let-offset="offset" let-isVisible="isVisible">
+          <div class="cust-page">
+            <span *ngIf="rowCount">          
+          Page {{curPage}} of {{Math.ceil(rowCount/limit)}} ({{rowCount}} items)
+        </span>
+          </div>
+          <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'" [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)" (change)="getVisualList($event.page, form.value, $event, applyFilter ,applySorting)">
+          </datatable-pager>
+        </ng-template>
+      </ngx-datatable-footer>
+    </ngx-datatable>
+  </nb-card-body>  
+</nb-card>

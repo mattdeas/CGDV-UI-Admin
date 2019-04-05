@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>{{page_title}}</nb-card-header>
+      <nb-card-body>
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit()"  #f="ngForm" novalidate>
+
+          <div class="form-group row">
+            <label for="content" class="col-6 col-md-4 col-form-label">Content</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="content" id="content" placeholder="Content" [(ngModel)]="model.content" #content="ngModel" [ngClass]="{ 'is-invalid': f.submitted && content.invalid }" required></textarea> 
+              <div *ngIf="f.submitted && content.invalid" class="invalid-feedback">
+                <div *ngIf="content.errors?.required">Content is required</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="link" class="col-6 col-md-4 col-form-label">Link</label>
+            <div class="col-12 col-md-8">
+              <input type="text" class="form-control" name="link" id="link" placeholder="link" [(ngModel)]="model.link" #link="ngModel" [ngClass]="{ 'is-invalid': f.submitted && link.invalid }" />
+              <div *ngIf="f.submitted && link.invalid" class="invalid-feedback">
+                <div *ngIf="link.errors?.required">link is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary" >Submit</button>
+              <a class="btn btn-primary" [routerLink]="['/pages/cms/home/news/list']">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

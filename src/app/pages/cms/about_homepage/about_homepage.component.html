@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>Home Page - About Us</nb-card-header>
+      <nb-card-header>
+        <button type="button" class="btn btn-primary" *ngIf="showAddBtn" (click)="isAdd = true;">Add</button>
+        <button type="button" class="btn btn-primary" *ngIf="showEditBtn" (click)="isEdit = true;">Edit</button>
+      </nb-card-header>
+      <nb-card-body *ngIf="this.model.content">
+        <div>
+          <h5 class="text-heading">About Us :</h5>
+          <p [innerHTML]="model.content"></p>
+        </div>
+      </nb-card-body>
+      <nb-card-body>
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate *ngIf="isAdd || isEdit">
+          <div class="form-group row">
+            <label for="content" class="col-6 col-md-4 col-form-label">About Us</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="content" id="content" placeholder="Content" [(ngModel)]="model.content" #content="ngModel" [ngClass]="{ 'is-invalid': f.submitted && content.invalid }" required> </textarea>
+              <div *ngIf="f.submitted && content.invalid" class="invalid-feedback">
+                <div *ngIf="content.errors?.required">Content is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-primary" (click)='cancel()'>Cancel</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

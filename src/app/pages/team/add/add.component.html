@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>{{page_title}}</nb-card-header>
+  <nb-card-header>
+    <a class="btn btn-primary btn-with-icon" [routerLink]="['/pages/team/list']" >
+        <span><i class="nb-arrow-thin-left"></i>Back</span>  
+    </a>
+  </nb-card-header>
+  <nb-card-header>
+    <form class="form-inline" #form="ngForm" novalidate (ngSubmit)="sorts= []; applyFilter = true; applySorting = false; getUserList(1, form.value,'', applyFilter, applySorting)">
+      <input type="text" class="form-control full-width margin-5" ngModel name="firstname" #firstname="ngModel" placeholder="First Name">
+      <input type="text" class="form-control full-width margin-5" ngModel name="lastname" #lastname="ngModel" placeholder="Last Name">
+      <input type="text" class="form-control full-width margin-5" ngModel name="email" #email="ngModel" placeholder="Email">
+      <button type="submit" class="btn btn-primary mr-1 mb-1">Search</button>
+      <button type="button" class="btn btn-primary mr-1 mb-1 reset" (click)="sorts= []; applyFilter = false; applySorting = false; form.reset(); getUserList(1, form.value,'', applyFilter, applySorting)">Reset</button>
+    </form>
+  </nb-card-header>
+  <nb-card-body>
+    <ngx-datatable class="material" [rowHeight]="'auto'" [rows]="rows" [headerHeight]="50" [footerHeight]="50" [loadingIndicator]="loading" [count]="data?.count" [offset]="data?.currentPage - 1" [externalPaging]="true" [limit]="limit" [externalSorting]="true" (sort)="applySorting = true; getUserList(1, form.value, $event, applyFilter ,applySorting)" [sorts]="sorts">
+      <ngx-datatable-column name="First name" prop="firstname"></ngx-datatable-column>
+      <ngx-datatable-column name="Last name" prop="lastname"></ngx-datatable-column>
+      <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
+      <ngx-datatable-column name="Action" [width]="200" [sortable]="false">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <nb-actions size="medium">            
+            <nb-action icon="nb-checkmark" (click)="setInTeam(row.id)" title='Add to Tean'></nb-action>
+          </nb-actions>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-footer>
+        <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-curPage="curPage" let-offset="offset" let-isVisible="isVisible">
+          <div class="cust-page">
+            <span *ngIf="rowCount">          
+          Page {{curPage}} of {{Math.ceil(rowCount/3)}} ({{rowCount}} items)
+        </span>
+          </div>
+          <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'" [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)" (change)="getUserList($event.page, form.value, $event, applyFilter ,applySorting)">
+          </datatable-pager>
+        </ng-template>
+      </ngx-datatable-footer>
+    </ngx-datatable>
+  </nb-card-body>
+    </nb-card>
+  </div>
+</div>

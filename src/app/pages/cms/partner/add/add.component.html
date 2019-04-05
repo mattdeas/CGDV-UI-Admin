@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>{{page_title}}</nb-card-header>
+      <nb-card-body>
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit()"  #f="ngForm" novalidate>
+
+          <div class="form-group row">
+            <label for="title" class="col-6 col-md-4 col-form-label">Title</label>
+            <div class="col-12 col-md-8">
+              <input type="text" class="form-control" name="title" id="title" placeholder="Title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" required/>
+              <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                <div *ngIf="title.errors?.required">Title is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="link" class="col-6 col-md-4 col-form-label">Link</label>
+            <div class="col-12 col-md-8">
+              <input type="text" class="form-control" name="link" id="link" placeholder="link" [(ngModel)]="model.link" #link="ngModel" [ngClass]="{ 'is-invalid': f.submitted && link.invalid }" />
+              <div *ngIf="f.submitted && link.invalid" class="invalid-feedback">
+                <div *ngIf="link.errors?.required">link is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isEdit"> 
+            <div class="upload-img form-group row" *ngIf="model.avatar && !changeImageFlag">
+              <label class="col-6 col-md-4 col-form-label">Picture</label>
+              <div class="col-12 col-md-8">
+                <img src="{{API_URL}}{{model.avatar}}">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-6 col-md-4 col-form-label"></label>
+              <div class="col-12 col-md-8">                
+                <button  type="button" class="btn btn-primary mr-1 mb-1 " (click)="changeImage()" [hidden]="!model.avatar || changeImageFlag">Change</button>
+                <button  type="button" class="btn btn-primary mr-1 mb-1 " (click)="removeImage(model.avatar) " [hidden]="!model.avatar || changeImageFlag">Remove</button>
+              </div>
+            </div>
+
+            <div class="form-group row" *ngIf="changeImageFlag || !model.avatar">
+              <label class="col-6 col-md-4 col-form-label">Picture</label>
+              <div class="col-12 col-md-8">
+                <input type="file" (change)="changeListener($event)" >
+              </div>
+            </div>
+            <div class="upload-img form-group row" *ngIf="image">
+              <label class="col-6 col-md-4 col-form-label"></label>
+              <div class="col-12 col-md-8">
+                <img  src="{{image}}">
+              </div>
+            </div>    
+            <div class="form-group row" >
+              <label class="col-6 col-md-4 col-form-label"></label>
+              <div class="col-12 col-md-8">
+              <button type="button" class="btn btn-primary mr-1 mb-1 " (click)="UploadImage() " [hidden]="!image " [disabled]="disableFlag ">Upload</button>
+              <button type="button " class="btn btn-primary mr-1 mb-1 " (click)="removeImage() " [hidden]="!image">Remove</button>
+            </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isEdit">
+            <div class="form-group row">
+              <label class="col-6 col-md-4 col-form-label">Picture</label>
+              <div class="col-12 col-md-8">
+                <input type="file" (change)="changeListener($event)" >
+              </div>
+            </div>
+            <div class="upload-img form-group row" *ngIf="image">
+              <label class="col-6 col-md-4 col-form-label"></label>
+              <div class="col-12 col-md-8">
+                <img  src="{{image}}">
+              </div>
+            </div>         
+            <div class="form-group row">
+              <label class="col-6 col-md-4 col-form-label"></label>
+              <div class="col-12 col-md-8">                
+                <button type="button" class="btn btn-primary mr-1 mb-1 " (click)="UploadImage()" [hidden]="!image" [disabled]="disableFlag ">Upload</button>
+                <button type="button" class="btn btn-primary mr-1 mb-1 " (click)="removeImage()" [hidden]="!image">Remove</button>
+              </div>
+            </div>
+          </div> 
+          
+
+          <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary" >Submit</button>
+              <a class="btn btn-primary" [routerLink]="['/pages/cms/home/partner/list']">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

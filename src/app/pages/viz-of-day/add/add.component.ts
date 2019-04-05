@@ -1,0 +1,110 @@
+import { NbMenuService } from '@nebular/theme';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from '../../../@core/data/common.service';
+import { UserService } from '../../../@core/data/users.service';
+import { ToastService } from '../../../utils/toastr.service';
+import { AppComponent } from '../../../app.component';
+
+import { UploadService } from '../../../@core/data/upload.service';
+import { VisualService } from '../../../@core/data/visual.service';
+import { SharedService } from '../../../utils/shared.service';
+
+import { environment } from '../../../../environments/environment';
+
+@Component({
+  selector: 'ngx-add',
+  styleUrls: ['./add.component.scss'],
+  templateUrl: './add.component.html',
+})
+export class AddComponent {
+  API_URL = environment.apiUrl;
+  page_title: any;
+  vizOfDay: any;
+  rows = [];
+  data: any = {
+    count: 0,
+    currentPage: 0
+  };
+  Math: any;
+  applyFilter = false;
+  applySorting = false;
+  sortingData: any = {prop: '', dir: ''};
+  sorts: any[] = [];
+  loading = true;
+  limit = 3;
+  
+  constructor(private toasterService: ToastService,
+              private commonService: CommonService,
+              private userService: UserService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private appcomponent: AppComponent,
+              private uploadService: UploadService,
+              private visualService: VisualService,
+              private sharedService: SharedService
+              ) {}
+  ngOnInit() {
+    this.page_title = this.route.snapshot.data.title;
+    this.route.queryParams.subscribe(params => {
+      this.vizOfDay = params['id'];
+      // this.getNotInVizOfDay();
+      this.Math = Math;
+      this.getNotInVizOfDay(1, '', '', this.applyFilter, this.applySorting);
+    });
+  }
+  getNotInVizOfDay(pageNo: number, filterData: any, sortingData: any, applyFilter: boolean, applySorting: boolean){
+    this.loading = true;
+    let url = '?recordPerPage='+this.limit+'&page=' + pageNo;
+    url +=  '&category_id=' + this.vizOfDay;
+    if (applySorting === true && sortingData) {
+      if (sortingData.sorts && sortingData.sorts[0]) {
+        this.sortingData.prop = sortingData.sorts[0].prop;
+        this.sortingData.dir = sortingData.sorts[0].dir;
+      }
+      url +=  '&orderby=' + this.sortingData.prop +
+              '&orderbydirection=' + this.sortingData.dir;
+    }
+    if (applyFilter === true && filterData) {
+
+      url +=  (filterData.title ? ('&title=' + filterData.title) : '') +
+              (filterData.author ? ('&author=' + filterData.author) : '') +
+              (filterData.tags ? ('&tags=' + filterData.tags) : '') 
+    }
+    this.visualService.getNotInVizOfDay(url).subscribe((res: any) => {
+        this.loading = false;
+        if (res.status === 0) {
+          return false;
+        }
+        if(res.status){
+          this.rows = res.result.data;
+          this.data.count = res.result.count;
+          this.data.currentPage = res.result.currentPage;
+        }
+     },
+      (error) => {        
+        this.toasterService.showError(error);
+      });
+  }
+  setVizOfDay(viz_id){
+    this.visualService.setVizOfDay(viz_id, this.vizOfDay, true)
+    .subscribe((res: any) => {
+        if(res.status){
+          this.toasterService.showSuccess(res.message);
+          // this.router.navigate(['/pages/viz-of-day/list'],{ queryParams: {  } , queryParamsHandling:"merge"  });
+          this.rows = this.rows.filter(item => item.id !== viz_id);          
+            this.data.count -= 1;
+            if(!this.rows.length){
+              this.getNotInVizOfDay(1, '', '', this.applyFilter, this.applySorting);
+            }
+        }else{
+          this.toasterService.showError(res.message);
+        }
+      },
+    (error) => {        
+      this.toasterService.showError(error);
+    });
+  } 
+}
+
+

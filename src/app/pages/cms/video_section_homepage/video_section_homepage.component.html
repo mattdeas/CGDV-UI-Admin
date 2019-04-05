@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>Home Page - Video Section</nb-card-header>
+      <nb-card-header>
+        <button type="button" class="btn btn-primary" *ngIf="showAddBtn" (click)="isAdd = true;">Add</button>
+        <button type="button" class="btn btn-primary" *ngIf="showEditBtn" (click)="isEdit = true;">Edit</button>
+      </nb-card-header>
+      <nb-card-body *ngIf="this.model.text_typed && this.model.text_content">
+        <div>
+          <h5 class="text-heading">Text(Typing) :</h5>
+          <p [innerHTML]="model.text_typed"></p>
+          <h5 class="text-heading">Text(Content) :</h5>
+          <p [innerHTML]="model.text_content"></p>
+        </div>
+      </nb-card-body>
+      <nb-card-body>
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate *ngIf="isAdd || isEdit">
+          <div class="form-group row">
+            <label for="text_typed" class="col-6 col-md-4 col-form-label">Text(Typing)</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="text_typed" id="text_typed" placeholder="text_typed" [(ngModel)]="model.text_typed" #text_typed="ngModel" [ngClass]="{ 'is-invalid': f.submitted && text_typed.invalid }" required> </textarea>
+              <div *ngIf="f.submitted && text_typed.invalid" class="invalid-feedback">
+                <div *ngIf="text_typed.errors?.required">Text(Typing) is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="text_typed" class="col-6 col-md-4 col-form-label">Text(Content)</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="text_content" id="text_content" placeholder="text_content" [(ngModel)]="model.text_content" #text_content="ngModel" [ngClass]="{ 'is-invalid': f.submitted && text_content.invalid }" required> </textarea>
+              <div *ngIf="f.submitted && text_content.invalid" class="invalid-feedback">
+                <div *ngIf="text_content.errors?.required">Text(Content) is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-primary" (click)='cancel()'>Cancel</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>{{page_title}}</nb-card-header>
+      <nb-card-body>
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit()"  #f="ngForm" novalidate>
+
+          <div class="form-group row">
+            <label for="title" class="col-6 col-md-4 col-form-label">Title</label>
+            <div class="col-12 col-md-8">
+              <input type="text" class="form-control" name="title" id="title" placeholder="Title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" required />
+              <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                <div *ngIf="title.errors?.required">Title is required</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label for="author" class="col-6 col-md-4 col-form-label">Author</label>
+            <div class="col-12 col-md-8">
+              <input type="text" class="form-control" name="author" id="author" placeholder="Author" [(ngModel)]="model.author" #author="ngModel" [ngClass]="{ 'is-invalid': f.submitted && author.invalid }" required />
+              <div *ngIf="f.submitted && author.invalid" class="invalid-feedback">
+                <div *ngIf="author.errors?.required">Author is required</div>
+              </div>
+            </div>
+          </div>   -->       
+
+          <div class="form-group row">
+            <label for="country_id" class="col-6 col-md-4 col-form-label">Country</label>
+            <div class="col-12 col-md-8">
+              <select class="form-control" name="country_id" [(ngModel)]="model.country_id" #country_id="ngModel"  [ngClass]="{ 'is-invalid': f.submitted && country_id.invalid }" >
+                <option [ngValue]="undefined" selected="">Select Country</option>
+                <option *ngFor="let co of countryList;" [ngValue]="co.id">
+                  {{ co.name }}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && country_id.invalid" class="invalid-feedback">
+                <div *ngIf="country_id.errors?.required">Country is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="university_id" class="col-6 col-md-4 col-form-label">University or Organization</label>
+            <div class="col-12 col-md-8">
+              <select class="form-control" name="university_id" [(ngModel)]="model.university_id" #university_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && university_id.invalid }" >
+                <option [ngValue]="undefined" selected="">Select University or Organization</option>
+                <option *ngFor="let uni of universityList;" [ngValue]="uni.id">
+                  {{ uni.name }}
+                </option>
+              </select>
+              <div *ngIf="f.submitted && university_id.invalid" class="invalid-feedback">
+                <div *ngIf="university_id.errors?.required">University is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="header" class="col-6 col-md-4 col-form-label">Sequence</label>
+            <div class="col-12 col-md-8">
+              <input type="number" min="1"  class="form-control" name="seq_no
+              " id="seq_no" placeholder="Sequence" [(ngModel)]="model.seq_no" #seq_no="ngModel" [ngClass]="{ 'is-invalid': f.submitted && seq_no.invalid }" />
+              <div *ngIf="f.submitted && seq_no.invalid" class="invalid-feedback">
+                <div *ngIf="seq_no.errors?.required">Sequence is required</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="form-group row">
+            <label for="tags" class="col-6 col-md-4 col-form-label">Tags</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="tags" id="tags" placeholder="Add tags by comma seperated e.g. tag1,tag2" [(ngModel)]="model.tags" #tags="ngModel">
+              </textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="embed_code" class="col-6 col-md-4 col-form-label">Embed Code</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="embed_code" id="embed_code" placeholder="Add Embed Code" [(ngModel)]="model.embed_code" #embed_code="ngModel" [ngClass]="{ 'is-invalid': f.submitted && embed_code.invalid }" required >
+              </textarea>
+              <div *ngIf="f.submitted && embed_code.invalid" class="invalid-feedback">
+                <div *ngIf="embed_code.errors?.required">Embed code is required</div>
+              </div>
+            </div>            
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary" >Submit</button>
+              <a class="btn btn-primary" [routerLink]="['/pages/video/list']"  preserveQueryParams="true">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

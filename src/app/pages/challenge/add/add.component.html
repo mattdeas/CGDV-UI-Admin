@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>{{page_title}}</nb-card-header>
+      <nb-card-body>
+        <form name="form" (ngSubmit)="onSubmit()"  #f="ngForm">
+
+          <div class="form-group row">
+            <label for="title" class="col-6 col-md-4 col-form-label">Name</label>
+            <div class="col-12 col-md-8">
+              <input type="text" class="form-control" name="challenge_name" id="challenge_name" placeholder="Challenge Name" [(ngModel)]="model.challenge_name" #title="ngModel" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="embed_code" class="col-6 col-md-4 col-form-label">Description</label>
+            <div class="col-12 col-md-8">
+              <textarea class="form-control" name="challenge_description" id="challenge_description" placeholder="Add Description" [(ngModel)]="model.challenge_description" #embed_code="ngModel" >
+              </textarea>
+            </div>            
+          </div>
+
+          <div class="form-group row">
+              <label for="title" class="col-6 col-md-4 col-form-label">Start Date</label>
+              <div class="col-12 col-md-8">
+                <input type="text" class="form-control" name="start" id="start" placeholder="Start Date" [(ngModel)]="model.start" #start="ngModel" />
+                </div>
+          </div>
+
+          <div class="form-group row">
+              <label for="title" class="col-6 col-md-4 col-form-label">End Date</label>
+              <div class="col-12 col-md-8">
+                <input type="text" class="form-control" name="end" id="end" placeholder="End Date" [(ngModel)]="model.end" #end="ngModel" />
+                </div>
+          </div>
+
+          <div class="form-group row" *ngIf="isEdit" >
+            <label for="country_id" class="col-6 col-md-4 col-form-label">Winner</label>
+            <div class="col-12 col-md-8">
+              <select class="form-control" name="first_viz_id" [(ngModel)]="model.first_viz_id" #first_viz_id="ngModel"   >
+                <option [ngValue]="undefined" selected="">Select Winner</option>
+                <option *ngFor="let viz of rows;" [ngValue]="viz.id">
+                  {{ viz.title }} - {{ viz.username}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="isEdit">
+              <label for="country_id" class="col-6 col-md-4 col-form-label">Second</label>
+              <div class="col-12 col-md-8">
+                <select class="form-control" name="second_viz_id" [(ngModel)]="model.second_viz_id" #second_viz_id="ngModel" >
+                  <option [ngValue]="undefined" selected="">Select Second Place</option>
+                  <option *ngFor="let viz of rows;" [ngValue]="viz.id">
+                    {{ viz.title }} - {{ viz.username}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="isEdit">
+                <label for="country_id" class="col-6 col-md-4 col-form-label">Third</label>
+                <div class="col-12 col-md-8">
+                  <select class="form-control" name="third_viz_id" [(ngModel)]="model.third_viz_id" #third_viz_id="ngModel" >
+                    <option [ngValue]="undefined" selected="">Select Third Place</option>
+                    <option *ngFor="let viz of rows;" [ngValue]="viz.id">
+                      {{ viz.title }} - {{ viz.username}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+          
+          <div class="form-group row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary" >Submit</button>
+              <a class="btn btn-primary" [routerLink]="['/pages/challege/list']"  preserveQueryParams="true">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

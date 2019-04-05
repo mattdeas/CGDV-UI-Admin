@@ -1,0 +1,46 @@
+
+.upload-img img {
+	width: 250px;
+    height: 250px;
+    object-fit: contain;
+    max-width: 100%;
+    display: inline-block;
+}
+.overlay {
+	float: left;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: fixed;
+	z-index: 99999999;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,.5);
+}
+.loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.margin-5{
+	margin: 5px;
+}
+
+.cust-page{
+    width: 100%;
+    padding: .5rem 1.2rem;
+}
+
+
+.ngx-datatable {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.upvoted{
+	color: red;
+}
+button.btn.btn-primary{margin-right: 5px;}
+.main-content form{width: 100%;}
